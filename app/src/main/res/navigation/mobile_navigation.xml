@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.finals.foodrunner.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_foodSelectorFragment"
+            app:destination="@id/foodSelectorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_my_profile"
+        android:name="com.finals.foodrunner.ui.my_profile.MyProfile"
+        android:label="@string/menu_my_profile"
+        tools:layout="@layout/fragment_my_profile" />
+    <fragment
+        android:id="@+id/nav_fav_restuarant"
+        android:name="com.finals.foodrunner.ui.fav_restaurant.FavouriteRestaurants"
+        android:label="@string/menu_fav_restaurant"
+        tools:layout="@layout/fragment_fav_restaurant" >
+        <action
+            android:id="@+id/action_nav_fav_restuarant_to_foodSelectorFragment"
+            app:destination="@id/foodSelectorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_order_history"
+        android:name="com.finals.foodrunner.ui.order_history.OrderHistory"
+        android:label="@string/menu_order_history"
+        tools:layout="@layout/fragment_order_history" />
+    <fragment
+        android:id="@+id/nav_faq"
+        android:name="com.finals.foodrunner.ui.faq.Faq"
+        android:label="@string/menu_faq"
+        tools:layout="@layout/fragment_home" />
+    <dialog
+        android:id="@+id/logout"
+        android:name="com.finals.foodrunner.ui.logout.Logout"
+        android:label="Logout" >
+        <action
+            android:id="@+id/action_logout_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </dialog>
+
+    <fragment
+        android:id="@+id/splashScreenLoading"
+        android:name="com.finals.foodrunner.ui.splash_screen.SplashScreenLoading"
+        android:label="splash_screen_loading"
+        tools:layout="@layout/splash_screen_loading" >
+        <action
+            android:id="@+id/action_splashScreenLoading_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/splashScreenLoading"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splashScreenLoading_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.finals.foodrunner.ui.login.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment2_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.finals.foodrunner.ui.signup.SignUpFragment"
+        android:label="sign_up_fragment"
+        tools:layout="@layout/sign_up_fragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodSelectorFragment"
+        android:name="com.finals.foodrunner.ui.food_selector.FoodSelectorFragment"
+        android:label="food_selector_fragment"
+        tools:layout="@layout/food_selector_fragment" /><action android:id="@+id/action_global_splashScreenLoading" app:destination="@id/splashScreenLoading"/>
+
+</navigation>

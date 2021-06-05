@@ -1,0 +1,63 @@
+
+
+    override fun closeSearch() {
+        val searchOpenView = findViewById<RelativeLayout>(R.id.search_view)
+        val circularConceal = ViewAnimationUtils.createCircularReveal(
+            searchOpenView,
+            searchOpenView.right,
+            (searchOpenView.top + searchOpenView.bottom) / 2,
+            searchOpenView.width.toFloat(), 0f
+        )
+        circularConceal.duration = 400
+        circularConceal.start()
+        searchOpenView.clearFocus()
+        this.isSearchBarOpen = false;
+
+        circularConceal.addListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) = Unit
+            override fun onAnimationCancel(animation: Animator?) = Unit
+            override fun onAnimationStart(animation: Animator?) = Unit
+            override fun onAnimationEnd(animation: Animator?) {
+                findViewById<RelativeLayout>(R.id.search_view).visibility = View.INVISIBLE
+                findViewById<EditText>(R.id.search_input_text).setText("")
+                circularConceal.removeAllListeners()
+            }
+        })
+
+
+    }
+
+
+    override fun openSearch() {
+        findViewById<EditText>(R.id.search_input_text).setText("")
+        val searchOpenView = findViewById<RelativeLayout>(R.id.search_view)
+        searchOpenView.visibility = View.VISIBLE
+        val circularReveal = ViewAnimationUtils.createCircularReveal(
+            searchOpenView,
+            searchOpenView.right,
+            (searchOpenView.top + searchOpenView.bottom) / 2,
+            0f,
+            searchOpenView.width.toFloat()
+
+        )
+        this.isSearchBarOpen = true;
+        circularReveal.duration = 400
+        searchOpenView.requestFocus()
+        circularReveal.start()
+
+
+    }
+
+
+    private fun showKeyboard() {
+        val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+
+    }
+
+    private fun closeKeyboard() {
+        val inputMethodManager =
+            getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
+    }
