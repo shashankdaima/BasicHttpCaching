@@ -7,18 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.finals.foodrunner.R
-import com.finals.foodrunner.objects.RestaurantObject
 import com.finals.foodrunner.databinding.RestaurantItemBinding
+import com.finals.foodrunner.objects.Restaurant
 import com.squareup.picasso.Picasso
 
-class RestaurantListAdapter : ListAdapter<RestaurantObject,RestaurantListAdapter.ViewHolder>(RestaurantComparator()) {
+class RestaurantListAdapter : ListAdapter<Restaurant,RestaurantListAdapter.ViewHolder>(RestaurantComparator()) {
     class ViewHolder(private val binding: RestaurantItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(restaurantObject: RestaurantObject) {
+        fun bind(restaurantObject: Restaurant) {
             binding.apply {
 
                 restaurantName.text = restaurantObject.name
-                restaurantCost.text = "Rs."+restaurantObject.cost.toString()+"/- Per Person"
+                restaurantCost.text = "Rs."+restaurantObject.cost_for_one.toString()+"/- Per Person"
                 restaurantRating.text = restaurantObject.rating.toString()
                 if(restaurantObject.isFavourite){
                     restaurantFav.setImageDrawable(ResourcesCompat.getDrawable(itemView.resources,R.drawable.ic_fav,null))
@@ -28,10 +28,10 @@ class RestaurantListAdapter : ListAdapter<RestaurantObject,RestaurantListAdapter
 
                 }
 
-                if(restaurantObject.photo!=null){
+                if(restaurantObject.image_url!=null){
 
                     ResourcesCompat.getDrawable(itemView.resources,R.drawable.food_item_placeholder,null)?.let {
-                        Picasso.get().load(restaurantObject.photo).placeholder(
+                        Picasso.get().load(restaurantObject.image_url).placeholder(
                             it
                         ).into(restaurantImage)
                     };
@@ -54,17 +54,17 @@ class RestaurantListAdapter : ListAdapter<RestaurantObject,RestaurantListAdapter
         }
     }
 
-    class RestaurantComparator:DiffUtil.ItemCallback<RestaurantObject>(){
+    class RestaurantComparator:DiffUtil.ItemCallback<Restaurant>(){
         override fun areItemsTheSame(
-            oldItem: RestaurantObject,
-            newItem: RestaurantObject
+            oldItem: Restaurant,
+            newItem: Restaurant
         ): Boolean {
             return oldItem.id==newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: RestaurantObject,
-            newItem: RestaurantObject
+            oldItem: Restaurant,
+            newItem: Restaurant
         ): Boolean {
             return oldItem==newItem
 

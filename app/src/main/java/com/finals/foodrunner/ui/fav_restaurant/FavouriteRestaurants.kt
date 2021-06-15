@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.finals.foodrunner.R
 import com.finals.foodrunner.adapter.RestaurantListAdapter
-import com.finals.foodrunner.objects.RestaurantObject
+import com.finals.foodrunner.objects.Restaurant
 import com.finals.foodrunner.databinding.FragmentFavRestaurantBinding
 
 class FavouriteRestaurants : Fragment(R.layout.fragment_fav_restaurant) {
@@ -16,38 +16,38 @@ class FavouriteRestaurants : Fragment(R.layout.fragment_fav_restaurant) {
         binding= FragmentFavRestaurantBinding.bind(view)
 
         val list=   listOf(
-            RestaurantObject(
+            Restaurant(
                 name = "First Restaurant",
                 rating = 1,
-                cost = 200,
+                cost_for_one = 200,
                 isFavourite = true,
                 id = 1
             ),
-            RestaurantObject(
+            Restaurant(
                 name = "Second Restaurant",
                 rating = 1,
-                cost = 200,
+                cost_for_one = 200,
                 isFavourite = false,
                 id = 2
             ),
-            RestaurantObject(
+            Restaurant(
                 name = "Third Restaurant",
                 rating = 1,
-                cost = 200,
+                cost_for_one = 200,
                 isFavourite = true,
                 id = 3
             ),
-            RestaurantObject(
+            Restaurant(
                 name = "Fourth Restaurant",
                 rating = 1,
-                cost = 200,
+                cost_for_one = 200,
                 isFavourite = false,
                 id = 4
             ),
-            RestaurantObject(
+            Restaurant(
                 name = "Fifth Restaurant",
                 rating = 1,
-                cost = 200,
+                cost_for_one = 200,
                 isFavourite = true,
                 id = 5
             )

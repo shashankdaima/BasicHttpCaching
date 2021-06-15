@@ -15,15 +15,15 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.finals.foodrunner.R
 import com.finals.foodrunner.adapter.RestaurantListAdapter
 import com.finals.foodrunner.databinding.FragmentHomeBinding
-import com.finals.foodrunner.objects.RestaurantObject
+import com.finals.foodrunner.objects.Restaurant
 import com.finals.foodrunner.ui.MainActivity
-import com.finals.foodrunner.volley.ApiConst
+import com.finals.foodrunner.volley.ALL_RESTAURANTS_URL
+import com.finals.foodrunner.volley.HEADER
 import com.finals.foodrunner.volley.VolleySingleton
 import org.json.JSONException
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,9 +33,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding = FragmentHomeBinding.bind(view)
 
 
-        val list = ArrayList<RestaurantObject>();
+        val list = ArrayList<Restaurant>();
         val accessTokenRequest: JsonObjectRequest = object : JsonObjectRequest(
-            Method.GET, ApiConst.ALL_RESTAURANTS_URL, null,
+            Method.GET, ALL_RESTAURANTS_URL, null,
             Response.Listener {
                 try {
                     val obj = it.getJSONObject("data")
@@ -45,17 +45,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         val data = obj.getJSONArray("data")
                         for (i in 0 until data.length()) {
                             val restaurantJsonObject = data.getJSONObject(i)
-                            val restaurantObject = RestaurantObject(
+                            val Restaurant = Restaurant(
 
                                 id = restaurantJsonObject.getInt("id"),
                                 name = restaurantJsonObject.getString("name"),
                                 rating = restaurantJsonObject.getDouble("rating"),
-                                cost = restaurantJsonObject.getInt("cost_for_one"),
+                                cost_for_one = restaurantJsonObject.getInt("cost_for_one"),
                                 isFavourite = false,
-                                photo = restaurantJsonObject.getString("image_url")
+                                image_url = restaurantJsonObject.getString("image_url")
 
                             )
-                            list.add(restaurantObject)
+                            list.add(Restaurant)
 
                         }
                     } else {
@@ -75,10 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }) {
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {
-                val params = HashMap<String, String>()
-                params["token"] = ApiConst.TOKEN
-                params["Content-type"] = "application/json"
-                return params
+                return HEADER
             }
         }
 
