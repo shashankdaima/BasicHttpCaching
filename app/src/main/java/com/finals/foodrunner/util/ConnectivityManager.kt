@@ -8,8 +8,8 @@ import java.util.*
 
 //https://stackoverflow.com/questions/53532406/activenetworkinfo-type-is-deprecated-in-api-level-28
 
-class ConnectivityManager {
-    fun checkConnectivity(context:Context):Boolean   {
+class ConnectivityManager (private val context: Context){
+    fun checkConnectivity():Boolean   {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkCapabilities = connectivityManager.activeNetwork ?: return false

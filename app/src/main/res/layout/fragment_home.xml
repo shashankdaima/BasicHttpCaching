@@ -3,15 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.home.HomeFragment">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_gravity="top|center"
-        android:id="@+id/progress_bar"
-        android:layout_height="wrap_content"/>
-    <androidx.recyclerview.widget.RecyclerView
+   <androidx.recyclerview.widget.RecyclerView
         android:paddingHorizontal="4dp"
         android:id="@+id/list_all_restaurants"
         android:clipToPadding="false"

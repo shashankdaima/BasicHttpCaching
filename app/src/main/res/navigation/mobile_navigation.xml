@@ -9,11 +9,7 @@
         android:id="@+id/nav_home"
         android:name="com.finals.foodrunner.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_nav_home_to_foodSelectorFragment"
-            app:destination="@id/foodSelectorFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/nav_my_profile"
         android:name="com.finals.foodrunner.ui.my_profile.MyProfile"
@@ -23,11 +19,7 @@
         android:id="@+id/nav_fav_restuarant"
         android:name="com.finals.foodrunner.ui.fav_restaurant.FavouriteRestaurants"
         android:label="@string/menu_fav_restaurant"
-        tools:layout="@layout/fragment_fav_restaurant" >
-        <action
-            android:id="@+id/action_nav_fav_restuarant_to_foodSelectorFragment"
-            app:destination="@id/foodSelectorFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_fav_restaurant" />
     <fragment
         android:id="@+id/nav_order_history"
         android:name="com.finals.foodrunner.ui.order_history.OrderHistory"
@@ -79,10 +71,6 @@
             android:id="@+id/action_signUpFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
     </fragment>
-    <fragment
-        android:id="@+id/foodSelectorFragment"
-        android:name="com.finals.foodrunner.ui.food_selector.FoodSelectorFragment"
-        android:label="food_selector_fragment"
-        tools:layout="@layout/food_selector_fragment" /><action android:id="@+id/action_global_splashScreenLoading" app:destination="@id/splashScreenLoading"/>
+    <action android:id="@+id/action_global_splashScreenLoading" app:destination="@id/splashScreenLoading"/>
 
 </navigation>
