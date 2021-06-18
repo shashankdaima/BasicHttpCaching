@@ -12,7 +12,8 @@ import com.finals.foodrunner.volley.RestaurantApi
 import com.finals.foodrunner.volley.RestaurantResponseInterface
 import com.finals.foodrunner.volley.VolleySingleton
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel(
@@ -21,21 +22,20 @@ class MainActivityViewModel(
     private val connectivityManager: ConnectivityManager,
     restaurantDatabase: RestaurantDatabase
 ) : ViewModel(), HomeViewModel, MyProfileViewModel, FavouriteRestaurant, OrderHistory {
-    private val _allRestaurants = MutableLiveData<List<Restaurant>>();
-    private val allRestaurants: LiveData<List<Restaurant>> = _allRestaurants
+
+    val restaurantDao = restaurantDatabase.restaurantDao()
+    private val restaurantSortOrder = MutableLiveData(SORT_SCHEME.SORT_BY_RATING)
+    private val query = MutableLiveData<String>();
     val connectionChannel = Channel<ConnectivityCheck>();
     val eventChannel = Channel<Events>()
-    val restaurantDao = restaurantDatabase.restaurantDao()
-    private val restaurantSortOrder = MutableLiveData<SORT_SCHEME>(SORT_SCHEME.SORT_BY_RATING)
-
 
     init {
-        reload()
+        reloadHome()
 
     }
 
-    fun reload() {
-        updateAllRestaurants()
+    override fun reloadHome() {
+        updateAllRestaurants(forceRefresh = true)
 
 
     }
@@ -45,26 +45,32 @@ class MainActivityViewModel(
     override fun updateAllRestaurants(forceRefresh: Boolean) {
 
         if (connectivityManager.checkConnectivity() && connectivityManager.isOnline()) {
-            viewModelScope.launch {
 
+            viewModelScope.launch {
+                eventChannel.send(Events.LoadingStart())
                 connectionChannel.send(ConnectivityCheck.ONLINE)
+
             }
 
-            api.getAllRestaurants(volleySingleton, object : RestaurantResponseInterface {
+
+            api.getAllRestaurants(volleySingleton,object : RestaurantResponseInterface {
                 override fun onError(throwable: Throwable, list: List<Restaurant>?) {
                     list?.let {
                         viewModelScope.launch { restaurantDao.addRestaurant(list) }
 
                     }
                     viewModelScope.launch {
-
+                        eventChannel.send(Events.LoadingComplete())
                         eventChannel.send(Events.ErrorHomeFragment(throwable))
                     }
                 }
 
                 override fun onResponse(list: List<Restaurant>) {
 
-                    viewModelScope.launch { restaurantDao.addRestaurant(list) }
+                    viewModelScope.launch {
+                        eventChannel.send(Events.LoadingComplete())
+                        restaurantDao.addRestaurant(list)
+                    }
                 }
 
 
@@ -73,31 +79,23 @@ class MainActivityViewModel(
 
         } else {
             viewModelScope.launch {
-
+                eventChannel.send(Events.LoadingComplete())
                 connectionChannel.send(ConnectivityCheck.OFFLINE)
+
             }
         }
 
     }
 
-    override fun fetchFromDatabase() {
-        viewModelScope.launch {
-            restaurantSortOrder.value?.let {
-                restaurantDao.getAllRestaurants("", it).collect {
-                    _allRestaurants.postValue(it)
-                }
-            }
-        }
+    override fun fetchFromDatabase() : Flow<List<Restaurant>>? {
 
-
+        return restaurantSortOrder.value?.let { restaurantDao.getAllRestaurants("", sortBy = it) }
     }
 
     override fun getSortOrderLiveData(): MutableLiveData<SORT_SCHEME> {
         return this.restaurantSortOrder
     }
 
-    override fun fetchAllRestaurants() =
-        this.allRestaurants
 
     override fun sortOrderChanged(index: Int) {
 
@@ -109,7 +107,18 @@ class MainActivityViewModel(
 
         }
 
+
     }
+
+    override fun setQuery(query: String) {
+        this.query.postValue(query)
+    }
+
+    override fun getQuery(): LiveData<String> {
+        return query
+    }
+
+    override fun getHomeEventChannel() = eventChannel
 
 
     override fun restaurantFavChanged(restaurant: Restaurant) {
@@ -123,7 +132,10 @@ class MainActivityViewModel(
         ONLINE, OFFLINE
     }
 
+
     sealed class Events {
         data class ErrorHomeFragment(val error: Throwable) : Events()
+        class LoadingStart : Events()
+        class LoadingComplete : Events()
     }
 }

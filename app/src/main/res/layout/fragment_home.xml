@@ -5,15 +5,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-   <androidx.recyclerview.widget.RecyclerView
-        android:paddingHorizontal="4dp"
-        android:id="@+id/list_all_restaurants"
-        android:clipToPadding="false"
-        android:paddingBottom="72dp"
-        android:paddingTop="4dp"
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:id="@+id/swipe_to_refresh"
+        android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_all_restaurants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="4dp"
+
+            android:paddingTop="4dp"
+            android:paddingBottom="72dp" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

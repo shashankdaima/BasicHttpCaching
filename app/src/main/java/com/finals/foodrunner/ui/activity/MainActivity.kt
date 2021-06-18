@@ -20,6 +20,7 @@ import com.finals.foodrunner.controller.AppBarController
 import com.finals.foodrunner.controller.DrawerController
 import com.finals.foodrunner.controller.SearchViewController
 import com.finals.foodrunner.room.RestaurantDatabase
+import com.finals.foodrunner.ui.menu.MenuFragment
 import com.finals.foodrunner.util.ConnectivityManager
 import com.finals.foodrunner.volley.RestaurantApi
 import com.finals.foodrunner.volley.VolleySingleton
@@ -39,6 +40,43 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home,
+                R.id.nav_my_profile,
+                R.id.nav_fav_restuarant,
+                R.id.nav_order_history,
+                R.id.nav_faq,
+                R.id.logout
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+
+            if(destination.id ==R.id.menuFragment){
+                lockDrawer()
+                showAppBar()
+
+
+            }
+            else if (!(destination.id in appBarConfiguration.topLevelDestinations)) {
+                hideAppBar()
+                lockDrawer()
+            } else {
+                showAppBar()
+                unlockDrawer()
+            }
+
+        }
         val volleySingleton = VolleySingleton(this)
         val connectivityManager = ConnectivityManager(this)
         val viewModelFactory = MainActivityFactory(
@@ -65,44 +103,12 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
                             exitProcess(0);
                         }
                         .setPositiveButton("Reload") { _, _ ->
-                            viewModel.reload()
+                            viewModel.reloadHome()
                         }
                         .create().show()
 
                 }
             }
-        }
-
-
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home,
-                R.id.nav_my_profile,
-                R.id.nav_fav_restuarant,
-                R.id.nav_order_history,
-                R.id.nav_faq,
-                R.id.logout
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-
-
-            if (!(destination.id in appBarConfiguration.topLevelDestinations)) {
-                hideAppBar()
-                lockDrawer()
-            } else {
-                showAppBar()
-                unlockDrawer()
-            }
-
         }
 
 
