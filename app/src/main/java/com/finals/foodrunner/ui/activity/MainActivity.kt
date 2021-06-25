@@ -1,14 +1,12 @@
 package com.finals.foodrunner.ui.activity
 
+import android.content.Context
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AlertDialog
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -19,33 +17,35 @@ import com.finals.foodrunner.R
 import com.finals.foodrunner.controller.AppBarController
 import com.finals.foodrunner.controller.DrawerController
 import com.finals.foodrunner.controller.SearchViewController
+import com.finals.foodrunner.databinding.ActivityMainBinding
 import com.finals.foodrunner.room.RestaurantDatabase
-import com.finals.foodrunner.ui.menu.MenuFragment
-import com.finals.foodrunner.util.ConnectivityManager
-import com.finals.foodrunner.volley.RestaurantApi
+import com.finals.foodrunner.util.*
 import com.finals.foodrunner.volley.VolleySingleton
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity(), DrawerController, AppBarController, SearchViewController {
 
+    lateinit var viewModel: ActivityViewModel
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
-    lateinit var viewModel: MainActivityViewModel
+    private lateinit var binding: ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setTheme(R.style.Theme_FoodRunner)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
 
 
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        drawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        drawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(
@@ -58,17 +58,30 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
                 R.id.logout
             ), drawerLayout
         )
+        val volleySingleton = VolleySingleton(this)
+        val connectivityManager = ConnectivityManager(this)
+        val restaurantDatabase = Room.databaseBuilder(
+            applicationContext,
+            RestaurantDatabase::class.java,
+            "restaurant_database"
+        ).fallbackToDestructiveMigration()
+            .build()
+
+
+        val viewModelFactory =
+            ActivityViewModelFactory(volleySingleton, connectivityManager, restaurantDatabase)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(ActivityViewModel::class.java)
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-            if(destination.id ==R.id.menuFragment){
+            if (destination.id == R.id.menuFragment||destination.id == R.id.cartFragment) {
                 lockDrawer()
                 showAppBar()
 
 
-            }
-            else if (!(destination.id in appBarConfiguration.topLevelDestinations)) {
+            } else if (!(destination.id in appBarConfiguration.topLevelDestinations)) {
                 hideAppBar()
                 lockDrawer()
             } else {
@@ -77,40 +90,17 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
             }
 
         }
-        val volleySingleton = VolleySingleton(this)
-        val connectivityManager = ConnectivityManager(this)
-        val viewModelFactory = MainActivityFactory(
-            volleySingleton = volleySingleton,
-            connectivityManager = connectivityManager,
-            api = RestaurantApi(),
-            restaurantDatabase = Room.databaseBuilder(
-                applicationContext,
-                RestaurantDatabase::class.java,
-                "task_database"
-            )
-                .fallbackToDestructiveMigration()
-                .build()
-        )
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainActivityViewModel::class.java)
-        lifecycleScope.launchWhenStarted {
-            viewModel.connectionChannel.receiveAsFlow().collect {
-                if (it == MainActivityViewModel.ConnectivityCheck.OFFLINE) {
-                    AlertDialog.Builder(this@MainActivity)
-                        .setTitle("No Internet Found")
-                        .setMessage("Please connect to Internet")
-                        .setNegativeButton("Close") { _, _ ->
-                            finishAffinity();
-                            exitProcess(0);
-                        }
-                        .setPositiveButton("Reload") { _, _ ->
-                            viewModel.reloadHome()
-                        }
-                        .create().show()
 
-                }
-            }
-        }
 
+    }
+
+
+    fun setupCredentials() {
+        val sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val name = sharedPreferences.getString(USER_NAME_KEY, "Name Surname")
+        val mobileNumber = sharedPreferences.getLong(USER_MOBILE_NUMBER_KEY, 84400000000)
+        findViewById<TextView>(R.id.user_name).text = name
+        findViewById<TextView>(R.id.user_phone_number).text = "+91-$mobileNumber"
 
     }
 
@@ -130,12 +120,12 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
     }
 
     override fun showAppBar() {
-        toolbar.visibility = View.VISIBLE
+        supportActionBar?.show()
     }
 
     override fun hideAppBar() {
 
+        supportActionBar?.hide()
 
-        toolbar.visibility = View.GONE
     }
 }

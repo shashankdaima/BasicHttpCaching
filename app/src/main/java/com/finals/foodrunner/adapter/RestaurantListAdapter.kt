@@ -58,6 +58,24 @@ class RestaurantListAdapter(val onItemListener: OnItemListener) :
                     };
                 }
                 restaurantFav.setOnClickListener {
+                    if (!restaurantObject.isFavourite) {
+                        restaurantFav.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                itemView.resources,
+                                R.drawable.ic_fav,
+                                null
+                            )
+                        )
+                    } else {
+                        restaurantFav.setImageDrawable(
+                            ResourcesCompat.getDrawable(
+                                itemView.resources,
+                                R.drawable.ic_unfav,
+                                null
+                            )
+                        )
+
+                    }
                     onItemListener.onItemFavClickListener(restaurantObject)
                 }
                 root.setOnClickListener {

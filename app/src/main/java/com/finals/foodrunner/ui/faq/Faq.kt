@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import com.finals.foodrunner.R
 import android.os.Bundle
 import android.view.Menu
+import com.finals.foodrunner.ui.activity.MainActivity
 
 class Faq:Fragment(R.layout.fragment_faq){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,4 +14,7 @@ class Faq:Fragment(R.layout.fragment_faq){
     override fun onPrepareOptionsMenu(menu: Menu) {
         menu.clear()
     }
+
 }
+
+

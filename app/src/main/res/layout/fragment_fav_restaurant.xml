@@ -9,9 +9,20 @@
         android:id="@+id/fav_restaurant_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="4dp"
         android:clipToPadding="false"
+        android:paddingHorizontal="4dp"
+        android:paddingTop="4dp"
         android:paddingBottom="72dp" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/is_empty_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:layout_marginHorizontal="90dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_no_food"
+        android:tint="@color/grey" />
 
 </FrameLayout>

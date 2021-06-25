@@ -12,5 +12,6 @@
     <string name="menu_order_history">Order History</string>
     <string name="menu_faq">Frequently Asked Questions</string>
     <string name="menu_logout">Logout</string>
+    <string name="preference_file_name">com.finals.foodrunner</string>
 
 </resources>

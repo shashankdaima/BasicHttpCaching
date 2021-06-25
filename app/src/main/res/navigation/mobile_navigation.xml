@@ -17,6 +17,11 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_nav_home_to_loginFragment2"
+            app:destination="@id/loginFragment2"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_my_profile"
@@ -29,6 +34,10 @@
         android:label="@string/menu_fav_restaurant"
         tools:layout="@layout/fragment_fav_restaurant" >
         <action
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             android:id="@+id/action_nav_fav_restuarant_to_menuFragment"
             app:destination="@id/menuFragment" />
     </fragment>
@@ -52,20 +61,6 @@
     </dialog>
 
     <fragment
-        android:id="@+id/splashScreenLoading"
-        android:name="com.finals.foodrunner.ui.splash_screen.SplashScreenLoading"
-        android:label="splash_screen_loading"
-        tools:layout="@layout/splash_screen_loading" >
-        <action
-            android:id="@+id/action_splashScreenLoading_to_nav_home"
-            app:destination="@id/nav_home"
-            app:popUpTo="@id/splashScreenLoading"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_splashScreenLoading_to_loginFragment2"
-            app:destination="@id/loginFragment2" />
-    </fragment>
-    <fragment
         android:id="@+id/loginFragment2"
         android:name="com.finals.foodrunner.ui.login.LoginFragment"
         android:label="login_fragment"
@@ -73,6 +68,11 @@
         <action
             android:id="@+id/action_loginFragment2_to_signUpFragment"
             app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment2_to_nav_home"
+            app:destination="@id/nav_home"
+            app:popUpTo="@id/loginFragment2"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -83,7 +83,6 @@
             android:id="@+id/action_signUpFragment_to_loginFragment2"
             app:destination="@id/loginFragment2" />
     </fragment>
-    <action android:id="@+id/action_global_splashScreenLoading" app:destination="@id/splashScreenLoading"/>
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.finals.foodrunner.ui.menu.MenuFragment"
@@ -91,6 +90,34 @@
         <argument
             android:name="Restaurants"
             app:argType="com.finals.foodrunner.objects.Restaurant" />
+        <action
+            android:id="@+id/action_menuFragment_to_cartFragment"
+            app:destination="@id/cartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.finals.foodrunner.ui.cart.CartFragment"
+        android:label="cart_fragment"
+        tools:layout="@layout/cart_fragment" >
+        <argument
+            android:name="orderedFood"
+            app:argType="com.finals.foodrunner.objects.MenuItem[]" />
+        <argument
+            android:name="restuarant"
+            app:argType="com.finals.foodrunner.objects.Restaurant" />
+        <action
+            android:id="@+id/action_cartFragment_to_confirmationFragment2"
+            app:destination="@id/confirmationFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmationFragment2"
+        android:name="com.finals.foodrunner.ui.confirmation.ConfirmationFragment"
+        android:label="confirmation_fragment"
+        tools:layout="@layout/confirmation_fragment" >
+        <argument
+            android:name="orderedFood"
+            app:argType="com.finals.foodrunner.objects.MenuItem[]" />
+
     </fragment>
 
 </navigation>
