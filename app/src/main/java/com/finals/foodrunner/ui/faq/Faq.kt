@@ -9,6 +9,7 @@ import com.finals.foodrunner.ui.activity.MainActivity
 class Faq:Fragment(R.layout.fragment_faq){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setHasOptionsMenu(true)
     }
     override fun onPrepareOptionsMenu(menu: Menu) {

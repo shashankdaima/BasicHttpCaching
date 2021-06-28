@@ -15,12 +15,11 @@ import com.finals.foodrunner.adapter.MenuListAdapter
 import com.finals.foodrunner.databinding.RestaurantMenuLayoutBinding
 import com.finals.foodrunner.objects.MenuItem
 import com.finals.foodrunner.util.ConnectivityManager
+import com.finals.foodrunner.util.DialogInterface
 import com.finals.foodrunner.util.exhaustive
+import com.finals.foodrunner.util.showNoInternetDialog
 import com.finals.foodrunner.volley.VolleySingleton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class MenuFragment : Fragment(R.layout.restaurant_menu_layout) {
@@ -54,11 +53,16 @@ class MenuFragment : Fragment(R.layout.restaurant_menu_layout) {
             setHasFixedSize(true)
         }
         binding.addToCartButton.setOnClickListener {
-            if(viewModel.getOrderedFood().isEmpty()){
-                Toast.makeText(requireContext(),"Please order something first",Toast.LENGTH_SHORT).show()
-            }
-            else{
-                findNavController().navigate(MenuFragmentDirections.actionMenuFragmentToCartFragment(viewModel.getOrderedFood(),args.Restaurants))
+            if (viewModel.getOrderedFood().isEmpty()) {
+                Toast.makeText(requireContext(), "Please order something first", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                findNavController().navigate(
+                    MenuFragmentDirections.actionMenuFragmentToCartFragment(
+                        viewModel.getOrderedFood(),
+                        args.Restaurants
+                    )
+                )
             }
 
         }
@@ -85,21 +89,21 @@ class MenuFragment : Fragment(R.layout.restaurant_menu_layout) {
                     }
                     is MenuViewModel.Event.Offline -> {
 
-                        androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                            .setTitle("No Internet Available")
-                            .setMessage("Please check internet connection.")
-                            .setNegativeButton("QUIT") { _, _ ->
-                                activity?.finishAndRemoveTask();
-                                exitProcess(0)
-                            }
-                            .setPositiveButton("RELOAD") { _, _ ->
-                                CoroutineScope(Dispatchers.IO).launch {
+                        showNoInternetDialog(requireContext(), object : DialogInterface {
+                            override fun onReload() {
+                                lifecycleScope.launchWhenStarted {
                                     viewModel.getMenu(
                                         restaurants
                                     )
                                 }
+                            }
 
-                            }.create().show()
+                            override fun onExitApp() {
+                                activity?.finishAndRemoveTask()
+                                exitProcess(0)
+                            }
+
+                        })
                     }
                 }.exhaustive
             })

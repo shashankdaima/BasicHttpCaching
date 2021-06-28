@@ -70,7 +70,7 @@
 
 
         <Button
-            android:id="@+id/signin_button"
+            android:id="@+id/sign_in_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/button_horizontal_padding"
@@ -83,7 +83,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/forget_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -103,15 +103,14 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="Don't have an account?"
             android:textAlignment="viewEnd"
             android:textColor="@color/whitegrey"
             app:layout_constraintEnd_toStartOf="@+id/move_to_signup"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="@+id/signin_button"
-            app:layout_constraintTop_toBottomOf="@+id/signin_button" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
         <TextView
             android:id="@+id/move_to_signup"
@@ -124,7 +123,7 @@
             android:textColor="@color/whitegrey"
             android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
-            app:layout_constraintEnd_toEndOf="@+id/signin_button"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/textView3" />
 

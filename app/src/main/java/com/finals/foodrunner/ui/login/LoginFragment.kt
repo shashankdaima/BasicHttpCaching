@@ -46,7 +46,7 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                             putBoolean(USER_LOGGEDIN_KEY,true)
                         }.apply()
 
-                        findNavController().navigate(LoginFragmentDirections.actionLoginFragment2ToNavHome())
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragment2ToNavHome(it.user))
 
                     } catch (e: Exception) {
                         Toast.makeText(
@@ -79,9 +79,13 @@ class LoginFragment : Fragment(R.layout.login_fragment) {
                     viewModel.savePassword(it.toString())
                 }
             }
-            signinButton.setOnClickListener {
+            signInButton.setOnClickListener {
                 viewModel.login()
             }
+            forgetPassword.setOnClickListener {
+                findNavController().navigate(LoginFragmentDirections.actionLoginFragment2ToForgotPasswordFragment2())
+            }
+
 
         }
 

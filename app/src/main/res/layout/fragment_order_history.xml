@@ -1,36 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ui.order_history.OrderHistory">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/whitegrey"
-        android:elevation="4dp"
-        android:paddingVertical="4dp"
-        android:text="Your previous order are listed below"
-        android:textAlignment="center"
-        android:textSize="16dp" />
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
+
+        android:id="@+id/swipe_to_refresh"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_history_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="4dp"
 
-            android:orientation="vertical">
+            android:paddingTop="4dp"
+            android:paddingBottom="72dp" />
 
-            <include layout="@layout/order_history_item" />
-
-            <include layout="@layout/order_history_item" />
-
-            <include layout="@layout/order_history_item" />
-        </LinearLayout>
-    </ScrollView>
-</androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>

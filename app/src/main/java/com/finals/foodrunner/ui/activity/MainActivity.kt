@@ -2,7 +2,6 @@ package com.finals.foodrunner.ui.activity
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,6 +21,7 @@ import com.finals.foodrunner.room.RestaurantDatabase
 import com.finals.foodrunner.util.*
 import com.finals.foodrunner.volley.VolleySingleton
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.textview.MaterialTextView
 
 
 class MainActivity : AppCompatActivity(), DrawerController, AppBarController, SearchViewController {
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
     private lateinit var toolbar: Toolbar
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,14 +40,11 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         drawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
+        navView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment)
-
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.nav_home,
@@ -69,14 +66,17 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
 
 
         val viewModelFactory =
-            ActivityViewModelFactory(volleySingleton, connectivityManager, restaurantDatabase)
+            ActivityViewModelFactory(
+                volleySingleton, connectivityManager, restaurantDatabase
+            )
         viewModel = ViewModelProvider(this, viewModelFactory).get(ActivityViewModel::class.java)
 
+        setupCredentials()
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
-            if (destination.id == R.id.menuFragment||destination.id == R.id.cartFragment) {
+            if (destination.id == R.id.menuFragment || destination.id == R.id.cartFragment) {
                 lockDrawer()
                 showAppBar()
 
@@ -96,12 +96,13 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
 
 
     fun setupCredentials() {
-        val sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val name = sharedPreferences.getString(USER_NAME_KEY, "Name Surname")
-        val mobileNumber = sharedPreferences.getLong(USER_MOBILE_NUMBER_KEY, 84400000000)
-        findViewById<TextView>(R.id.user_name).text = name
-        findViewById<TextView>(R.id.user_phone_number).text = "+91-$mobileNumber"
-
+        viewModel.user.observe(this){
+            navView.getHeaderView(0)
+                .findViewById<MaterialTextView>(R.id.user_name_nav_header).text =it.name
+            navView.getHeaderView(0)
+                .findViewById<MaterialTextView>(R.id.user_phone_number_nav_header).text =
+                "+91-${it.mobile_number}"
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -127,5 +128,13 @@ class MainActivity : AppCompatActivity(), DrawerController, AppBarController, Se
 
         supportActionBar?.hide()
 
+    }
+
+    fun setupCredentials(name: String?, mobileNumber: String) {
+        navView.getHeaderView(0).findViewById<MaterialTextView>(R.id.user_name_nav_header).text =
+            name
+        navView.getHeaderView(0)
+            .findViewById<MaterialTextView>(R.id.user_phone_number_nav_header).text =
+            "+91-$mobileNumber"
     }
 }

@@ -28,9 +28,9 @@
             app:civ_border_color="?attr/colorPrimary"
             app:civ_border_width="3dp" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/user_name_nav_header"
             android:layout_width="match_parent"
-            android:id="@+id/user_name"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
 
@@ -41,9 +41,9 @@
             android:textColor="?attr/colorPrimary"
             android:textSize="24sp" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/user_phone_number_nav_header"
             android:layout_width="match_parent"
-            android:id="@+id/user_phone_number"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="2dp"

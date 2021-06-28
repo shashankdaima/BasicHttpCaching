@@ -6,7 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.finals.foodrunner.objects.User
 import com.finals.foodrunner.util.ConnectivityManager
-import com.finals.foodrunner.volley.LoginResponseInterface
+import com.finals.foodrunner.volley.UserAuthResponseInterface
 import com.finals.foodrunner.volley.VolleySingleton
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -39,13 +39,11 @@ class LoginViewModel(
             mobileNumber = this.mobileLogin.value.toString(),
             password = this.passwordLogin.value.toString(),
             volleySingleton,
-            object : LoginResponseInterface {
+            object : UserAuthResponseInterface {
                 override fun onError(message: String) {
                     viewModelScope.launch{ channel.send(Event.Error(message)) }
                 }
-
                 override fun onResponse(user: User) {
-
                     viewModelScope.launch { channel.send(Event.Success(user)) }
                 }
 

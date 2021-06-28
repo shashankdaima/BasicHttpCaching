@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/red"
-    tools:context=".ui.confirmation.ConfirmationFragment"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/red"
+    tools:context=".ui.confirmation.ConfirmationFragment">
+
     <ProgressBar
         android:id="@+id/my_progressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:indeterminate="true"
-        android:max="100"
-        android:theme="@style/ProgressBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="80dp"
-        android:progress="10"/>
+        android:indeterminate="true"
+        android:max="100"
+        android:progress="10"
+        android:theme="@style/ProgressBarStyle"
+        android:visibility="invisible" />
 
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/success"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:visibility="invisible"
         android:layout_height="wrap_content"
-        android:src="@drawable/tick_gif"/>
+        android:layout_gravity="center"
+        android:src="@drawable/tick_gif"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:backgroundTint="@color/dark_red"
+        android:text="Click here to return to Home"
+        android:textColor="@color/whitegrey"
+        android:visibility="invisible" />
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/error"
         android:layout_width="200dp"
-        android:layout_gravity="center"
         android:layout_height="200dp"
-        android:visibility="invisible"
-        android:src="@drawable/cross_gif"/>
-
+        android:layout_gravity="center"
+        android:src="@drawable/cross_gif"
+        android:visibility="invisible" />
 
 
 </FrameLayout>

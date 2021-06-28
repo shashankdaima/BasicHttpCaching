@@ -4,7 +4,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.MutableLiveData
 import com.finals.foodrunner.R
 
-const val FILE_NAME="com.finals.foodrunner"
+
 
 operator  fun <T> MutableLiveData<ArrayList<T>>.plusAssign(values:List<T>){
     val value=this.value?: arrayListOf()
@@ -26,9 +26,11 @@ inline fun SearchView.onQueryTextChanged(crossinline listener: (String) -> Unit)
         }
     })
 }
+
 enum class SORT_SCHEME {
     SORT_BY_RATING, SORT_BY_INC_COST, SORT_BY_DES_COST
 }
+
 
 const val PREF_NAME= R.string.preference_file_name.toString()
 const val USER_ID_KEY="user_id"
