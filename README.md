@@ -12,4 +12,4 @@ Contents:
   <li>Logout(Dialog Fragment)</li>
 </ul>
 <H2>ScreenShots</H2>
-<img src="https://github.com/shashankdaima/BasicHttpCaching/blob/master/screenshots/photo6258126839490915788%20(1).jpg" alt="Login Screen" width =600px>
+<img src="https://github.com/shashankdaima/BasicHttpCaching/blob/master/screenshots/photo6258126839490915788%20(1).jpg" alt="Login Screen" width =300px>
